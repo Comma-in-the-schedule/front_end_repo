@@ -11,3 +11,21 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# 📌 추가된 Gradle 관련 파일
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+
+# 📌 추가된 Android 관련 파일
+/.cxx/
+*.so
+*.hprof
+
+# 📌 추가된 기타 불필요한 파일
+*.log
+*.lock
+*.gz
+*.zip
+*.bak
