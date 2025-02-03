@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'custom_button.dart';
+import '../widgets/custom_button.dart';
 
 class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFffffff),
+      backgroundColor: const Color(0xFFffffff),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '회원가입',
           style: TextStyle(
             fontFamily: 'Pretendard',
@@ -15,8 +17,8 @@ class RegisterScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFFffffff),
-        foregroundColor: Color(0xFF262627),
+        backgroundColor: const Color(0xFFffffff),
+        foregroundColor: const Color(0xFF262627),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -25,12 +27,12 @@ class RegisterScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     '바쁜 일상에',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
@@ -46,7 +48,7 @@ class RegisterScreen extends StatelessWidget {
                       height: 60,
                     ),
                   ),
-                  Text(
+                  const Text(
                     '쉼표를 찍다',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
@@ -56,7 +58,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -89,8 +91,8 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              Column(
+              const SizedBox(height: 10),
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -121,8 +123,8 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              Column(
+              const SizedBox(height: 10),
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -153,7 +155,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 70),
+              const SizedBox(height: 70),
               CustomButton(
                 text: '회원가입',
                 iconPath: 'assets/icons/logo_white.png',

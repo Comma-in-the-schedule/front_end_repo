@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'custom_button.dart';
+import '../widgets/custom_button.dart';
+import 'package:comma_in_the_schedule/routes/app_routes.dart';
+import 'package:comma_in_the_schedule/widgets/base_screen.dart';
 
 class NonLoggedInScreen extends StatelessWidget {
-  const NonLoggedInScreen({Key? key}) : super(key: key);
+  const NonLoggedInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
+    return BaseScreen(
+      currentIndex: 1, // 🔹 '캘린더' 버튼이 활성화되도록 설정
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -22,24 +24,24 @@ class NonLoggedInScreen extends StatelessWidget {
                     text: '회원가입',
                     iconPath: 'assets/icons/logo_white.png',
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushNamed(context, AppRoutes.register);
                     },
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: CustomButton(
                     text: '로그인',
                     iconPath: 'assets/icons/logo_white.png',
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, AppRoutes.login);
                     },
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
         ],
       ),
     );
