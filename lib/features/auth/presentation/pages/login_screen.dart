@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'custom_button.dart';
+import '../widgets/custom_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '로그인',
           style: TextStyle(
             fontFamily: 'Pretendard',
@@ -17,8 +17,8 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFFffffff),
-        foregroundColor: Color(0xFF262627),
+        backgroundColor: const Color(0xFFffffff),
+        foregroundColor: const Color(0xFF262627),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -27,12 +27,12 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     '바쁜 일상에',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
@@ -48,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                       height: 60,
                     ),
                   ),
-                  Text(
+                  const Text(
                     '쉼표를 찍다',
                     style: TextStyle(
                       fontFamily: 'Pretendard',
@@ -58,8 +58,8 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              TextField(
+              const SizedBox(height: 20),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: '이메일',
                   labelStyle: TextStyle(
@@ -80,8 +80,8 @@ class LoginScreen extends StatelessWidget {
                   color: Color(0xFF262627),
                 ),
               ),
-              SizedBox(height: 16),
-              TextField(
+              const SizedBox(height: 16),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: '비밀번호',
                   labelStyle: TextStyle(
@@ -107,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     '비밀번호 찾기',
                     style: TextStyle(
                       color: Colors.grey,
@@ -116,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomButton(
                 text: '로그인',
                 iconPath: 'assets/icons/logo_white.png',
@@ -128,7 +128,7 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
-                child: Text(
+                child: const Text(
                   '회원가입',
                   style: TextStyle(
                     color: Colors.grey,
