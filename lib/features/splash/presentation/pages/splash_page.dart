@@ -6,7 +6,6 @@ class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SplashPageState createState() => _SplashPageState();
 }
 
@@ -51,34 +50,41 @@ class _SplashPageState extends State<SplashPage>
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             // 왼쪽 텍스트: "바쁜 일상에"
             const Text(
               "바쁜 일상에",
               style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Pretendard',
                   color: Colors.white),
             ),
-            const SizedBox(width: 10), // 간격 추가
+            const SizedBox(width: 0), // 간격 추가
 
-            // 로고 아이콘 (애니메이션 적용)
-            FadeTransition(
-              opacity: _animation, // 투명도 애니메이션 적용
-              child: const Icon(
-                Icons.cloud, // ☁️ 아이콘 변경
-                size: 60,
-                color: Colors.white,
+            // 로고 이미지 (애니메이션 적용, 위치 살짝 올리기)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0), // 아이콘을 살짝 위로 이동
+              child: FadeTransition(
+                opacity: _animation, // 투명도 애니메이션 적용
+                child: Image.asset(
+                  'assets/icons/logo_w.png',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-            const SizedBox(width: 10), // 간격 추가
+            const SizedBox(width: 0), // 간격 추가
 
             // 오른쪽 텍스트: "쉼표를 찍다"
             const Text(
               "쉼표를 찍다",
               style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Pretendard',
                   color: Colors.white),
             ),
           ],
