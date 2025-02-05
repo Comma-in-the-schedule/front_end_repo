@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:comma_in_the_schedule/routes/app_routes.dart';
+import 'package:comma_in_the_schedule/features/non_auth/presentation/pages/non_login_page.dart'; // 🔹 비로그인 페이지 import
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex; // 현재 선택된 탭 인덱스
@@ -7,12 +8,10 @@ class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key, required this.currentIndex});
 
   @override
-  BottomNavBarState createState() =>
-      BottomNavBarState(); // 🔹 `_` 제거하여 public class로 변경
+  BottomNavBarState createState() => BottomNavBarState();
 }
 
 class BottomNavBarState extends State<BottomNavBar> {
-  // 🔹 `_` 제거하여 public class로 변경
   late int _selectedIndex;
 
   @override
@@ -38,7 +37,13 @@ class BottomNavBarState extends State<BottomNavBar> {
             context, AppRoutes.nonLoggedIn, (route) => false);
         break;
       case 2:
-        // 아직 연결할 페이지 없음 (알림)
+        // 🔹 알림 버튼을 누르면 `NonLoginPage`로 이동
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const NonLoginPage(),
+          ),
+        );
         break;
       case 3:
         // 아직 연결할 페이지 없음 (마이페이지)
