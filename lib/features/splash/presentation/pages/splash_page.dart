@@ -67,7 +67,7 @@ class _SplashPageState extends State<SplashPage>
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0), // 아이콘을 살짝 위로 이동
               child: FadeTransition(
-                opacity: _animation, // 투명도 애니메이션 적용
+                opacity: _animation,
                 child: Image.asset(
                   'assets/icons/logo_w.png',
                   width: 80,
