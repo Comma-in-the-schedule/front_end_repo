@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:comma_in_the_schedule/routes/app_routes.dart';
 import 'package:comma_in_the_schedule/features/non_auth/presentation/pages/non_login_page.dart'; // 🔹 비로그인 페이지 import
+import 'package:comma_in_the_schedule/features/survey/presentation/pages/survey_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex; // 현재 선택된 탭 인덱스
@@ -46,7 +47,12 @@ class BottomNavBarState extends State<BottomNavBar> {
         );
         break;
       case 3:
-        // 아직 연결할 페이지 없음 (마이페이지)
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SurveyPage(), // 마이페이지 → 설문조사 페이지로 연결
+          ),
+        );
         break;
     }
   }
