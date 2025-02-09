@@ -32,7 +32,7 @@ class _SurveyPageState extends State<SurveyPage> {
   final List<String> locations = ["서울", "경기"];
   final Map<String, List<String>> subLocations = {
     "서울": ["강남구", "서초구", "마포구", "송파구"],
-    "경기": ["수원시", "성남시", "고양시", "용인시"]
+    "경기": ["수원시", "성남시", "용인시"]
   };
 
   String selectedLocation = "서울"; // 기본 지역 선택
