@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:comma_in_the_schedule/routes/app_routes.dart';
-import 'package:comma_in_the_schedule/features/non_auth/presentation/pages/non_login_page.dart'; // 🔹 비로그인 페이지 import
+import 'package:comma_in_the_schedule/features/non_auth/presentation/pages/non_login_page.dart';
+import 'package:comma_in_the_schedule/features/survey/presentation/pages/survey_page.dart'; // 🔹 설문조사 페이지 import
 
 class BottomNavBar extends StatefulWidget {
-  final int currentIndex; // 현재 선택된 탭 인덱스
+  final int currentIndex;
 
   const BottomNavBar({super.key, required this.currentIndex});
 
@@ -17,11 +18,11 @@ class BottomNavBarState extends State<BottomNavBar> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.currentIndex; // 현재 선택된 탭 인덱스를 유지
+    _selectedIndex = widget.currentIndex;
   }
 
   void _onItemTapped(int index) {
-    if (_selectedIndex == index) return; // 같은 페이지일 경우 다시 이동하지 않음
+    if (_selectedIndex == index) return;
 
     setState(() {
       _selectedIndex = index;
@@ -37,7 +38,6 @@ class BottomNavBarState extends State<BottomNavBar> {
             context, AppRoutes.nonLoggedIn, (route) => false);
         break;
       case 2:
-        // 🔹 알림 버튼을 누르면 `NonLoginPage`로 이동
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -46,7 +46,12 @@ class BottomNavBarState extends State<BottomNavBar> {
         );
         break;
       case 3:
-        // 아직 연결할 페이지 없음 (마이페이지)
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SurveyPage(), // 🔹 설문조사 페이지 연결
+          ),
+        );
         break;
     }
   }
