@@ -77,52 +77,77 @@ class _SurveyPageState extends State<SurveyPage> {
               const SizedBox(height: 30),
 
               // 닉네임 입력 필드
-              const Text(
-                "닉네임",
-                style: TextStyle(
-                  fontFamily: 'Pretendard-Bold',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
+              Row(
+                children: const [
+                  Text(
+                    "* ",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "닉네임",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard-Bold',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 5),
               TextField(
                 controller: _nicknameController,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xFFF2F4F5), // 내부 배경색 변경
                   hintText: "쉼표에서 사용할 이름 또는 닉네임을 입력해주세요.",
                   hintStyle: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 5, horizontal: 15), // 높이 조정
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4), // 둥근 정도 축소
-                    borderSide: const BorderSide(color: Colors.grey),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: Color(0xFFBDBDBD),
+                        width: 1), // 비활성화 상태에서는 하단만 테두리
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6), // 둥근 정도 유지
-                    borderSide: const BorderSide(color: Colors.black),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: Color(0xFF262627), width: 1), // 활성화 상태에서는 하단만 강조
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
 
               // 주요 활동 위치
-              const Text(
-                "주요 활동 위치",
-                style: TextStyle(
-                  fontFamily: 'Pretendard-Bold',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
+              Row(
+                children: const [
+                  Text(
+                    "* ",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "주요 활동 위치",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard-Bold',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
 
-              // 🔹 지역 선택 (가로 정렬)
               Row(
                 children: [
-                  // 상위 지역 (서울, 경기)
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: selectedLocation,
@@ -135,21 +160,26 @@ class _SurveyPageState extends State<SurveyPage> {
                       onChanged: (value) {
                         setState(() {
                           selectedLocation = value!;
-                          selectedSubLocation = null; // 상위 지역 변경 시 하위 지역 초기화
+                          selectedSubLocation = null;
                         });
                       },
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
+                        filled: true,
+                        fillColor: const Color(0xFFF2F4F5),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xFFBDBDBD), width: 1),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xFF262627), width: 1),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15), // 높이 조정
+                            vertical: 10, horizontal: 15),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10), // 상위 지역과 하위 지역 사이 여백
-
-                  // 하위 지역 (구 선택)
+                  const SizedBox(width: 10),
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: selectedSubLocation,
@@ -166,39 +196,45 @@ class _SurveyPageState extends State<SurveyPage> {
                         });
                       },
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
+                        filled: true,
+                        fillColor: const Color(0xFFF2F4F5),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xFFBDBDBD), width: 1),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xFF262627), width: 1),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15), // 높이 조정
+                            vertical: 10, horizontal: 15),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 24),
 
-              // 🔹 선택한 지역 표시
-              Text(
-                selectedSubLocation != null
-                    ? "선택된 위치: $selectedLocation - $selectedSubLocation"
-                    : "선택된 위치: $selectedLocation",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // 관심 카테고리 선택
-              const Text(
-                "관심 카테고리",
-                style: TextStyle(
-                  fontFamily: 'Pretendard-Bold',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
+              // 🔹 관심 카테고리 선택 추가
+              Row(
+                children: const [
+                  Text(
+                    "* ",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "관심 카테고리",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard-Bold',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
 
@@ -219,7 +255,6 @@ class _SurveyPageState extends State<SurveyPage> {
                       child: Text(
                         category,
                         style: TextStyle(
-                          fontFamily: 'Pretendard-Bold',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: isSelected ? Colors.white : Colors.black,
@@ -231,32 +266,32 @@ class _SurveyPageState extends State<SurveyPage> {
               ),
               const SizedBox(height: 20),
 
-              // 제출 버튼
+              // 제출 버튼 (로고 포함)
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     // TODO: 제출 기능 구현
                   },
+                  icon: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 10), // 🔹 로고 왼쪽에서 10px 띄우기
+                    child: Image.asset(
+                      'assets/icons/logo_w.png',
+                      width: 20,
+                      height: 20,
+                    ),
+                  ),
+                  label: const Text("제출하기"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF262627),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                  child: const Text(
-                    "제출하기",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Pretendard-Bold',
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),
