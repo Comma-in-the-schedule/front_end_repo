@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  /// 토큰 저장 함수
+  /// 📌 토큰 저장 함수
   Future<bool> _saveTokens(String token, String refreshToken) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required String title,
     required String message1,
     String? message2,
-    String? navigateTo,
+    String? navigateTo, // 특정 페이지 이동할 경우 사용
   }) {
     if (!mounted) return;
 
@@ -276,26 +276,37 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
+
               // 이메일 입력
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: '이메일',
-                  labelStyle: TextStyle(
-                    color: _emailError != null
-                        ? const Color(0xFFB00020)
-                        : Colors.grey,
+                  filled: true,
+                  fillColor: const Color(0xFFF2F4F5),
+                  hintText: '이메일',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 15,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _emailError != null ? Colors.red : Colors.grey,
+                      color: _emailError != null
+                          ? Color(0xFFB00020)
+                          : Color(0xFFBDBDBD),
+                      width: 1,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _emailError != null ? Colors.red : Colors.grey,
+                      color: _emailError != null
+                          ? Color(0xFFB00020)
+                          : Color(0xFF262627),
+                      width: 1,
                     ),
                   ),
                   errorText: _emailError,
@@ -304,26 +315,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: _validateEmail,
               ),
               const SizedBox(height: 16),
+
               // 비밀번호 입력
               TextField(
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  labelStyle: TextStyle(
-                    color: _passwordError != null
-                        ? const Color(0xFFB00020)
-                        : Colors.grey,
+                  filled: true,
+                  fillColor: const Color(0xFFF2F4F5),
+                  hintText: '비밀번호',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 11,
+                    horizontal: 15,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _passwordError != null ? Colors.red : Colors.grey,
+                      color: _passwordError != null
+                          ? Color(0xFFB00020)
+                          : Color(0xFFBDBDBD),
+                      width: 1,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _passwordError != null ? Colors.red : Colors.grey,
+                      color: _passwordError != null
+                          ? Color(0xFFB00020)
+                          : Color(0xFF262627),
+                      width: 1,
                     ),
                   ),
                   errorText: _passwordError,
@@ -339,6 +361,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 onChanged: _validatePassword,
               ),
+
+              // 비밀번호 찾기
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -356,12 +380,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 20),
+
               // 로그인 버튼
               CustomButton(
                 text: '로그인',
-                iconPath: 'assets/icons/logo_white.png',
+                iconPath: 'assets/icons/logo_w.png',
                 onPressed: _login,
               ),
+
+              // 회원가입
               Align(
                 alignment: Alignment.center,
                 child: TextButton(
