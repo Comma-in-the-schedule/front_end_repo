@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'routes/app_routes.dart';
 
 void main() {
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'My App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Pretendard',
       ),
       initialRoute: AppRoutes.splash,
       routes: AppRoutes.routes,
