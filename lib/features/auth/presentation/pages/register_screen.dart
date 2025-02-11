@@ -436,10 +436,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: const Color(0xFF262627),
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 16,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -509,7 +506,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
 
               // 이메일 입력 + 인증요청 버튼
               Row(
@@ -521,23 +518,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: _emailController,
                       enabled: !_isEmailVerified,
                       decoration: InputDecoration(
-                        labelText: '이메일',
-                        labelStyle: TextStyle(
-                          color: _emailError != null
-                              ? Color(0xFFB00020)
-                              : Colors.grey,
+                        filled: true,
+                        fillColor: const Color(0xFFF2F4F5),
+                        hintText: '이메일',
+                        hintStyle: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
                         ),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 15,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color:
-                                _emailError != null ? Colors.red : Colors.grey,
+                            color: _emailError != null
+                                ? Color(0xFFB00020)
+                                : Color(0xFFBDBDBD),
+                            width: 1,
                           ),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color:
-                                _emailError != null ? Colors.red : Colors.grey,
+                            color: _emailError != null
+                                ? Color(0xFFB00020)
+                                : Color(0xFF262627),
+                            width: 1,
                           ),
                         ),
                         errorText: _emailError,
@@ -557,25 +562,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         foregroundColor: Colors.white,
                         disabledBackgroundColor: Colors.white,
                         disabledForegroundColor: const Color(0xFF262627),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16.5,
-                          horizontal: 12,
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(4),
                           side: BorderSide(
                             color: const Color(0xFF262627),
                           ),
                         ),
                       ),
-                      child: Text(
-                        _isEmailVerified ? '인증완료' : '인증요청',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Pretendard',
-                        ),
-                      ),
+                      child: Text(_isEmailVerified ? '인증완료' : '인증요청'),
                     ),
                   ),
                 ],
@@ -587,26 +582,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
-                  labelText: '비밀번호',
-                  labelStyle: TextStyle(
-                    color: _passwordError != null
-                        ? const Color(0xFFB00020)
-                        : Colors.grey,
+                  filled: true,
+                  fillColor: const Color(0xFFF2F4F5),
+                  hintText: '비밀번호',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
-                  floatingLabelStyle: TextStyle(
-                    color: _passwordError != null
-                        ? const Color(0xFFB00020)
-                        : Colors.grey,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 11,
+                    horizontal: 15,
                   ),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _passwordError != null ? Colors.red : Colors.grey,
+                      color: _passwordError != null
+                          ? Color(0xFFB00020)
+                          : Color(0xFFBDBDBD),
+                      width: 1,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: _passwordError != null ? Colors.red : Colors.grey,
+                      color: _passwordError != null
+                          ? Color(0xFFB00020)
+                          : Color(0xFF262627),
+                      width: 1,
                     ),
                   ),
                   errorText: _passwordError,
@@ -629,25 +629,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _confirmPasswordController,
                 obscureText: !_isConfirmPasswordVisible,
                 decoration: InputDecoration(
-                  labelText: '비밀번호 확인',
-                  labelStyle: TextStyle(
-                    color: _confirmPasswordError != null
-                        ? Color(0xFFB00020)
-                        : Colors.grey,
+                  filled: true,
+                  fillColor: const Color(0xFFF2F4F5),
+                  hintText: '비밀번호 확인',
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 11,
+                    horizontal: 15,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _confirmPasswordError != null
-                          ? Colors.red
-                          : Colors.grey,
+                          ? Color(0xFFB00020)
+                          : Color(0xFFBDBDBD),
+                      width: 1,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _confirmPasswordError != null
-                          ? Colors.red
-                          : Colors.grey,
+                          ? Color(0xFFB00020)
+                          : Color(0xFF262627),
+                      width: 1,
                     ),
                   ),
                   errorText: _confirmPasswordError,
@@ -663,12 +669,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 onChanged: _validateConfirmPassword,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 70),
 
               // 회원가입 버튼
               CustomButton(
                 text: '회원가입',
-                iconPath: 'assets/icons/logo_white.png',
+                iconPath: 'assets/icons/logo_w.png',
                 onPressed: _register,
               ),
             ],
