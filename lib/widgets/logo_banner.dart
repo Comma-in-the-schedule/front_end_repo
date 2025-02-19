@@ -7,7 +7,6 @@ class LogoBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 120, // 🔹 컨테이너 높이 설정
-      color: Colors.red, // 🔹 배경색 빨강 적용
       alignment: Alignment.center, // 🔹 전체 정렬
       child: Transform.translate(
         offset: const Offset(0, -5), // 🔹 전체를 위로 이동
