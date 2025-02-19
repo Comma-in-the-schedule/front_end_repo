@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:comma_in_the_schedule/features/auth/data/auth_api.dart';
 import 'package:comma_in_the_schedule/features/auth/presentation/widgets/custom_button.dart';
 
@@ -16,6 +15,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // FlutterSecureStorage 인스턴스 생성 (공용으로 사용)
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   bool _isLoading = false;
   bool _isPasswordVisible = false;
@@ -34,12 +36,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void _validateEmail(String value) {
     setState(() {
       if (value.isEmpty) {
-        _emailError = null; // 🔹 이메일이 비어 있으면 이 메시지 표시
+        _emailError = null;
       } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
           .hasMatch(value)) {
-        _emailError = '올바른 이메일 형식을 입력해주세요.'; // 🔹 이메일 형식이 잘못되었을 때
+        _emailError = '올바른 이메일 형식을 입력해주세요.';
       } else {
-        _emailError = null; // 🔹 올바른 입력이면 오류 메시지 제거
+        _emailError = null;
       }
     });
   }
@@ -47,11 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   /// 📌 비밀번호 유효성 검사
   void _validatePassword(String value) {
     setState(() {
-      if (value.isEmpty) {
-        _passwordError = null;
-      } else {
-        _passwordError = null;
-      }
+      _passwordError = null;
     });
   }
 
@@ -64,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (email.isEmpty) {
         _emailError = '이메일을 입력해주세요.';
       }
-
       if (password.isEmpty) {
         _passwordError = '비밀번호를 입력해주세요.';
       }
@@ -77,10 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final response = await _authApi.login(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+      final response = await _authApi.login(email, password);
 
       if (!mounted) return;
 
@@ -89,11 +83,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (result != null &&
             result['token'] != null &&
-            result['refreshToken'] != null) {
+            result['refreshToken'] != null &&
+            result['userDTO'] != null &&
+            result['userDTO']['email'] != null) {
           final String token = result['token'];
           final String refreshToken = result['refreshToken'];
+          final String userEmail = result['userDTO']['email'];
 
-          bool isSaved = await _saveTokens(token, refreshToken);
+          bool isSaved = await _saveUserData(token, refreshToken, userEmail);
 
           if (isSaved) {
             Navigator.pushNamed(context, '/main');
@@ -131,16 +128,28 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  /// 📌 토큰 저장 함수
-  Future<bool> _saveTokens(String token, String refreshToken) async {
+  /// 📌 이메일과 토큰을 FlutterSecureStorage에 저장
+  Future<bool> _saveUserData(
+      String token, String refreshToken, String email) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', token);
-      await prefs.setString('refreshToken', refreshToken);
+      await _secureStorage.write(key: 'token', value: token);
+      await _secureStorage.write(key: 'refreshToken', value: refreshToken);
+      await _secureStorage.write(key: 'userEmail', value: email);
 
-      return prefs.getString('token') == token &&
-          prefs.getString('refreshToken') == refreshToken;
+      // 저장된 데이터 확인 (비동기적으로 다시 읽기)
+      String? savedToken = await _secureStorage.read(key: 'token');
+      String? savedRefreshToken =
+          await _secureStorage.read(key: 'refreshToken');
+      String? savedEmail = await _secureStorage.read(key: 'userEmail');
+
+      print('✅ 저장된 토큰: $savedToken');
+      print('✅ 저장된 이메일: $savedEmail');
+
+      return savedToken == token &&
+          savedRefreshToken == refreshToken &&
+          savedEmail == email;
     } catch (e) {
+      print('❌ 데이터 저장 오류: $e');
       return false;
     }
   }
@@ -150,10 +159,9 @@ class _LoginScreenState extends State<LoginScreen> {
     required String title,
     required String message1,
     String? message2,
-    String? navigateTo, // 특정 페이지 이동할 경우 사용
+    String? navigateTo,
   }) {
     if (!mounted) return;
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -289,23 +297,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontSize: 14,
                     color: Colors.grey,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 15,
-                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _emailError != null
-                          ? Color(0xFFB00020)
-                          : Color(0xFFBDBDBD),
+                          ? const Color(0xFFB00020)
+                          : const Color(0xFFBDBDBD),
                       width: 1,
                     ),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _emailError != null
-                          ? Color(0xFFB00020)
-                          : Color(0xFF262627),
+                          ? const Color(0xFFB00020)
+                          : const Color(0xFF262627),
                       width: 1,
                     ),
                   ),
@@ -328,23 +334,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontSize: 14,
                     color: Colors.grey,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 11,
-                    horizontal: 15,
-                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 11, horizontal: 15),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _passwordError != null
-                          ? Color(0xFFB00020)
-                          : Color(0xFFBDBDBD),
+                          ? const Color(0xFFB00020)
+                          : const Color(0xFFBDBDBD),
                       width: 1,
                     ),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _passwordError != null
-                          ? Color(0xFFB00020)
-                          : Color(0xFF262627),
+                          ? const Color(0xFFB00020)
+                          : const Color(0xFF262627),
                       width: 1,
                     ),
                   ),
