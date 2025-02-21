@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../non_auth/presentation/pages/non_login_page.dart'; // 로그인 페이지
 import '../../../survey/presentation/pages/survey_page.dart'; // 설문조사 페이지
 import '../../../main/presentation/pages/main_page.dart'; // 메인 페이지
-import '../../../auth/data/auth_api.dart'; // AuthApi 클래스 (아래에 checkSurvey 추가)
+import '../../../auth/data/auth_api.dart'; // AuthApi 클래스
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class _SplashPageState extends State<SplashPage>
     }
 
     // 토큰이 있을 경우, 로컬에 저장된 이메일도 조회 (없으면 빈 문자열)
-    // 여기서 "userEmail" 키로 읽어오도록 수정
+    // 여기서는 "userEmail" 키를 사용
     final email = prefs.getString("userEmail") ?? "";
     if (email.isEmpty) {
       // 이메일이 없으면 예외처리 후 로그인 페이지로 이동
@@ -67,13 +67,14 @@ class _SplashPageState extends State<SplashPage>
     final surveyResponse =
         await authApi.checkSurvey(token: token, email: email);
 
-    // 응답 코드가 SURVEY301이면 설문조사 결과가 없는 것으로 판단하여 설문조사 페이지로 이동
-    if (surveyResponse['code'] == 'SURVEY301') {
+    // 설문조사가 진행되지 않은 경우
+    if (surveyResponse['isSuccess'] == false &&
+        surveyResponse['result'] == '_SURVEY_NOT_EXISTS') {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const SurveyPage()),
       );
     } else {
-      // 그 외 성공 응답이면 메인 페이지로 이동
+      // 그 외의 경우 (설문조사 결과가 존재하거나, 성공 응답일 경우) 메인 페이지로 이동
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainPage()),
       );
