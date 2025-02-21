@@ -1,3 +1,4 @@
+// lib/api/auth_api.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -9,7 +10,7 @@ class AuthApi {
     required String endpoint,
     required String method,
     Map<String, dynamic>? body,
-    String? token, // Authorization 토큰 추가
+    String? token,
   }) async {
     final headers = {'Content-Type': 'application/json'};
     if (token != null) {
@@ -30,7 +31,7 @@ class AuthApi {
       }
 
       if (response.statusCode == 200) {
-        final decodedBody = utf8.decode(response.bodyBytes); // UTF-8로 변환
+        final decodedBody = utf8.decode(response.bodyBytes);
         return jsonDecode(decodedBody);
       } else {
         return {
@@ -79,12 +80,7 @@ class AuthApi {
     );
   }
 
-  /// 설문조사 API 호출 메서드
-  /// [token] : 로그인 시 발급받은 토큰에서 추출한 값 사용 (요청 헤더의 Authorization: Bearer {token})
-  /// [email] : 토큰에 저장된 이메일
-  /// [nickname] : 사용자가 입력한 닉네임
-  /// [location] : 선택한 지역 (예: "서울특별시 성동구")
-  /// [category] : 선택한 관심 카테고리의 id 리스트 (예: [1, 2])
+  /// 설문조사 제출 API
   Future<Map<String, dynamic>> submitSurvey({
     required String token,
     required String email,
@@ -102,6 +98,19 @@ class AuthApi {
         'location': location,
         'category': category,
       },
+    );
+  }
+
+  /// 설문조사 결과 확인 API (이메일만 전송)
+  Future<Map<String, dynamic>> checkSurvey({
+    required String token,
+    required String email,
+  }) {
+    return _makeRequest(
+      endpoint: '/membership/auth/survey',
+      method: 'POST',
+      token: token,
+      body: {'email': email},
     );
   }
 }

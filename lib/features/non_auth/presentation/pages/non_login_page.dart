@@ -1,6 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+// 페이지 import
+import 'package:comma_in_the_schedule/features/auth/presentation/pages/register_screen.dart';
+import 'package:comma_in_the_schedule/features/auth/presentation/pages/login_screen.dart';
+
 class NonLoginPage extends StatefulWidget {
   const NonLoginPage({super.key});
 
@@ -46,14 +50,14 @@ class _NonLoginPageState extends State<NonLoginPage>
     return Scaffold(
       body: Stack(
         children: [
-          //  랜덤 배경 이미지
+          // 랜덤 배경 이미지
           Positioned.fill(
             child: Image.asset(
               backgroundImage,
               fit: BoxFit.cover,
             ),
           ),
-          //  로고 및 텍스트 복구 (백그라운드 위에 배치)
+          // 로고 및 텍스트 복구 (백그라운드 위에 배치)
           Positioned(
             top: 120,
             left: 0,
@@ -103,7 +107,7 @@ class _NonLoginPageState extends State<NonLoginPage>
               ],
             ),
           ),
-          //  아래에서 올라오는 슬라이드 패널
+          // 아래에서 올라오는 슬라이드 패널
           DraggableScrollableSheet(
             controller: _scrollController,
             initialChildSize: 0.1,
@@ -175,23 +179,29 @@ class _NonLoginPageState extends State<NonLoginPage>
                           ),
                         ),
                         const SizedBox(height: 20),
-
                         // 기존 버튼 영역 유지
                         Placeholder(
                           fallbackHeight: 150,
                           color: Colors.grey[400]!,
                         ),
-
                         // 새로운 버튼 추가
                         const SizedBox(height: 20), // 기존 버튼과의 간격
                         Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center, // 버튼을 정확히 중앙에 배치
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
                               width: 140, // 버튼 너비 조정 (더 중앙 정렬)
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // 회원가입 페이지로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen(),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF262627),
                                   foregroundColor: Colors.white,
@@ -202,11 +212,10 @@ class _NonLoginPageState extends State<NonLoginPage>
                                       vertical: 10, horizontal: 10),
                                 ),
                                 child: Stack(
-                                  alignment: Alignment.center, //  내부 요소 중앙 정렬
+                                  alignment: Alignment.center,
                                   children: [
                                     Transform.translate(
-                                      offset: const Offset(
-                                          -50, 0), //  로고를 더 왼쪽으로 이동
+                                      offset: const Offset(-50, 0),
                                       child: Image.asset(
                                         'assets/icons/logo_w.png',
                                         width: 18,
@@ -217,7 +226,7 @@ class _NonLoginPageState extends State<NonLoginPage>
                                       "회원가입",
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontFamily: 'Pretendard-Bold', //  폰트 설정
+                                        fontFamily: 'Pretendard-Bold',
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -225,11 +234,19 @@ class _NonLoginPageState extends State<NonLoginPage>
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16), //  버튼 간격 유지
+                            const SizedBox(width: 16),
                             SizedBox(
-                              width: 140, //  버튼 너비 조정 (더 중앙 정렬)
+                              width: 140, // 버튼 너비 조정 (더 중앙 정렬)
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // 로그인 페이지로 이동
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF262627),
                                   foregroundColor: Colors.white,
@@ -240,11 +257,10 @@ class _NonLoginPageState extends State<NonLoginPage>
                                       vertical: 10, horizontal: 10),
                                 ),
                                 child: Stack(
-                                  alignment: Alignment.center, //  내부 요소 중앙 정렬
+                                  alignment: Alignment.center,
                                   children: [
                                     Transform.translate(
-                                      offset: const Offset(
-                                          -50, 0), //  로고를 더 왼쪽으로 이동
+                                      offset: const Offset(-50, 0),
                                       child: Image.asset(
                                         'assets/icons/logo_w.png',
                                         width: 18,
@@ -255,7 +271,7 @@ class _NonLoginPageState extends State<NonLoginPage>
                                       "로그인",
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontFamily: 'Pretendard-Bold', //  폰트 설정
+                                        fontFamily: 'Pretendard-Bold',
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -265,7 +281,7 @@ class _NonLoginPageState extends State<NonLoginPage>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20), // 하단 여백 조정
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),

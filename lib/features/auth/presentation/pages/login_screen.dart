@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
           bool isSaved = await _saveUserData(token, refreshToken, userEmail);
 
           if (isSaved) {
-            Navigator.pushNamed(context, '/main');
+            Navigator.pushNamed(context, '/');
           } else {
             _showDialog(
               title: '오류',
