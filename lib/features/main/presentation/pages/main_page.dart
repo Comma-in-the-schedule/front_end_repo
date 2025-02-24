@@ -12,35 +12,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String selectedCategory = "전체"; // 기본적으로 전체 리스트 표시
-
-  // 더미 데이터 (추후 API 연결 예정)
-  final List<Map<String, String>> allContent = [
-    {"title": "전시회1", "category": "전시회/팝업"},
-    {"title": "전시회2", "category": "전시회/팝업"},
-    {"title": "전시회3", "category": "전시회/팝업"},
-    {"title": "전시회4", "category": "전시회/팝업"},
-    {"title": "전시회5", "category": "전시회/팝업"},
-    {"title": "영화1", "category": "영화"},
-    {"title": "영화2", "category": "영화"},
-    {"title": "헬스1", "category": "헬스"},
-    {"title": "물류1", "category": "물류"},
-  ];
+  String selectedCategory = "전체"; // 선택된 카테고리
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> filteredContent = selectedCategory == "전체"
-        ? allContent
-        : allContent
-            .where((item) => item["category"] == selectedCategory)
-            .toList();
-
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const UserProfile(), // 🔹 `const` 적용
+            const UserProfile(),
             CategoryBar(
               onCategorySelected: (category) {
                 setState(() {
@@ -48,20 +29,12 @@ class _MainPageState extends State<MainPage> {
                 });
               },
             ),
-            Expanded(
-              child: filteredContent.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "표시할 항목이 없습니다",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    )
-                  : ContentList(content: filteredContent),
-            ),
+            // 선택된 카테고리를 ContentList에 전달하여 필터링
+            Expanded(child: ContentList(selectedCategory: selectedCategory)),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: 0), // 🔹 `const` 제거
+      bottomNavigationBar: BottomNavBar(currentIndex: 0),
     );
   }
 }

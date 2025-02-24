@@ -1,7 +1,7 @@
 // lib/features/splash/presentation/pages/splash_page.dart
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../non_auth/presentation/pages/non_login_page.dart'; // 로그인 페이지
 import '../../../survey/presentation/pages/survey_page.dart'; // 설문조사 페이지
@@ -20,6 +20,9 @@ class _SplashPageState extends State<SplashPage>
   late AnimationController _controller;
   late Animation<double> _animation;
 
+  // FlutterSecureStorage 인스턴스 생성 (로그인 시 저장한 토큰 및 이메일 사용)
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +31,7 @@ class _SplashPageState extends State<SplashPage>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
-    )..forward(); // 애니메이션 시작
+    )..forward();
 
     // 0에서 1로 점점 나타나는 애니메이션 설정
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -40,43 +43,52 @@ class _SplashPageState extends State<SplashPage>
   }
 
   Future<void> _navigateNext() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("token");
+    // 저장된 토큰 읽어오기
+    final token = await _secureStorage.read(key: 'token');
+    // 저장된 이메일 읽어오기 (토큰 디코딩 대신 secure storage에서 직접 읽음)
+    final email = await _secureStorage.read(key: 'userEmail') ?? "";
 
-    // 토큰이 없는 경우 로그인 페이지로 이동
-    if (token == null) {
+    // 디버깅: 저장된 값 출력
+    debugPrint('토큰: $token');
+    debugPrint('이메일: $email');
+
+    // 토큰이나 이메일이 없으면 로그인 페이지로 이동
+    if (token == null || token.isEmpty || email.isEmpty) {
+      debugPrint('토큰이나 이메일이 없어서 로그인 페이지로 이동');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const NonLoginPage()),
       );
       return;
     }
 
-    // 토큰이 있을 경우, 로컬에 저장된 이메일도 조회 (없으면 빈 문자열)
-    // 여기서는 "userEmail" 키를 사용
-    final email = prefs.getString("userEmail") ?? "";
-    if (email.isEmpty) {
-      // 이메일이 없으면 예외처리 후 로그인 페이지로 이동
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const NonLoginPage()),
-      );
-      return;
-    }
-
-    // 설문조사 API 호출: 설문조사 결과가 있는지 확인
+    // 설문조사 API 호출: 저장된 이메일을 사용하여 설문조사 결과 확인 (GET 방식)
     final authApi = AuthApi();
     final surveyResponse =
         await authApi.checkSurvey(token: token, email: email);
 
-    // 설문조사가 진행되지 않은 경우
+    // 디버깅: API 응답 출력
+    debugPrint('설문조사 API 응답: $surveyResponse');
+
+    // API 응답에 따른 분기 처리
     if (surveyResponse['isSuccess'] == false &&
+        surveyResponse['code'] == 'SURVEY301' &&
         surveyResponse['result'] == '_SURVEY_NOT_EXISTS') {
+      debugPrint('설문조사가 진행되지 않았으므로 설문조사 페이지로 이동');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const SurveyPage()),
       );
-    } else {
-      // 그 외의 경우 (설문조사 결과가 존재하거나, 성공 응답일 경우) 메인 페이지로 이동
+    } else if (surveyResponse['isSuccess'] == true &&
+        surveyResponse['code'] == 'OK200') {
+      debugPrint('설문조사 결과가 존재하므로 메인 페이지로 이동');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainPage()),
+      );
+    } else {
+      // 그 외 예상치 못한 API 응답(예: 서버 오류 등)인 경우,
+      // 로그인 정보가 유효하지 않은 것으로 간주하여 로그인 페이지로 이동
+      debugPrint('예외적인 API 응답 또는 서버 오류로 인해 로그인 페이지로 이동');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const NonLoginPage()),
       );
     }
   }
@@ -105,8 +117,7 @@ class _SplashPageState extends State<SplashPage>
                   fontFamily: 'Pretendard',
                   color: Colors.white),
             ),
-            const SizedBox(width: 0), // 간격 추가
-
+            const SizedBox(width: 0),
             // 로고 이미지 (애니메이션 적용, 위치 살짝 올리기)
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
@@ -120,8 +131,7 @@ class _SplashPageState extends State<SplashPage>
                 ),
               ),
             ),
-            const SizedBox(width: 0), // 간격 추가
-
+            const SizedBox(width: 0),
             // 오른쪽 텍스트: "쉼표를 찍다"
             const Text(
               "쉼표를 찍다",
