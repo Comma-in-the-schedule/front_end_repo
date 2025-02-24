@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:comma_in_the_schedule/widgets/logo_banner.dart';
 import 'package:comma_in_the_schedule/features/auth/data/auth_api.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// jwt_decoder 관련 코드는 더 이상 사용하지 않습니다.
 
 class SurveyPage extends StatefulWidget {
   const SurveyPage({super.key});
@@ -31,7 +30,7 @@ class _SurveyPageState extends State<SurveyPage> {
   // 🔹 지역 선택 관련 변수
   final List<String> locations = ["서울특별시", "경기"];
   final Map<String, List<String>> subLocations = {
-    "서울특별시": ["강남구", "서초구", "마포구", "송파구"],
+    "서울특별시": ["강남구", "서초구", "마포구", "송파구", "성동구"],
     "경기": ["수원시", "성남시", "고양시", "용인시"]
   };
 
@@ -51,76 +50,6 @@ class _SurveyPageState extends State<SurveyPage> {
         selectedCategories.add(category); // 선택 추가
       }
     });
-  }
-
-  Future<void> _showRequestBodyDialog(
-      Map<String, dynamic> requestBody, String token) async {
-    // AlertDialog로 요청 바디 보여주기
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("요청 바디 확인"),
-          content: SingleChildScrollView(
-            child: Text(
-              const JsonEncoder.withIndent("  ").convert(requestBody),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, false); // 취소
-              },
-              child: const Text("취소"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, true); // 제출하기 선택
-              },
-              child: const Text("제출하기"),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirm == true) {
-      debugPrint("사용자가 제출하기를 선택했습니다. API 호출 시작");
-      // API 호출
-      final response = await _authApi.submitSurvey(
-        token: token,
-        email: requestBody['email'],
-        nickname: requestBody['nickname'],
-        location: requestBody['location'],
-        category: List<int>.from(requestBody['category']),
-      );
-
-      if (response['isSuccess'] == true) {
-        await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("설문조사 완료"),
-              content: const Text("설문조사가 제출되었습니다."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("확인"),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("오류 발생: ${response['message']}")),
-        );
-      }
-    } else {
-      debugPrint("사용자가 제출 취소를 선택했습니다.");
-    }
   }
 
   @override
@@ -385,7 +314,7 @@ class _SurveyPageState extends State<SurveyPage> {
                       return;
                     }
 
-                    // 저장된 이메일 읽어오기 (토큰 디코딩 대신)
+                    // 저장된 이메일 읽어오기
                     final String? storedEmail =
                         await _storage.read(key: 'userEmail');
                     if (storedEmail == null) {
@@ -406,8 +335,24 @@ class _SurveyPageState extends State<SurveyPage> {
 
                     debugPrint("요청 바디: ${jsonEncode(requestBody)}");
 
-                    // 요청 바디 AlertDialog로 먼저 보여주기
-                    await _showRequestBodyDialog(requestBody, token);
+                    // 요청 본문을 보여주는 AlertDialog 제거하고 바로 API 호출
+                    final response = await _authApi.submitSurvey(
+                      token: token,
+                      email: requestBody['email'],
+                      nickname: requestBody['nickname'],
+                      location: requestBody['location'],
+                      category: List<int>.from(requestBody['category']),
+                    );
+
+                    if (response['isSuccess'] == true) {
+                      // API 호출 성공 시 메인페이지로 이동
+                      Navigator.pushReplacementNamed(context, '/main');
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text("오류 발생: ${response['message']}")),
+                      );
+                    }
                   },
                   icon: Padding(
                     padding: const EdgeInsets.only(left: 10), // 왼쪽 10px 여백

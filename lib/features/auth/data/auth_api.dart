@@ -1,4 +1,3 @@
-// lib/api/auth_api.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -101,13 +100,27 @@ class AuthApi {
     );
   }
 
-  /// 설문조사 결과 확인 API (이메일만 전송)
+  /// 설문조사 결과 확인 API (GET 방식, 이메일은 쿼리 파라미터로 전달)
   Future<Map<String, dynamic>> checkSurvey({
     required String token,
     required String email,
   }) {
+    final endpoint = '/membership/auth/survey?email=$email';
+
     return _makeRequest(
-      endpoint: '/membership/auth/survey',
+      endpoint: endpoint,
+      method: 'GET',
+      token: token,
+    );
+  }
+
+  /// 추천 콘텐츠 API 호출 (POST)
+  Future<Map<String, dynamic>> fetchRecommendation({
+    required String token,
+    required String email,
+  }) {
+    return _makeRequest(
+      endpoint: '/activity/recommendation',
       method: 'POST',
       token: token,
       body: {'email': email},
